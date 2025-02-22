@@ -1,1 +1,1 @@
-# hacklytics
+# PrescriptiveAI
