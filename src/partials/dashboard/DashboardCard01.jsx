@@ -11,37 +11,16 @@ function DashboardCard01() {
 
   const chartData = {
     labels: [
-      '12-01-2022',
-      '01-01-2023',
-      '02-01-2023',
-      '03-01-2023',
-      '04-01-2023',
-      '05-01-2023',
-      '06-01-2023',
-      '07-01-2023',
-      '08-01-2023',
-      '09-01-2023',
-      '10-01-2023',
-      '11-01-2023',
-      '12-01-2023',
-      '01-01-2024',
-      '02-01-2024',
-      '03-01-2024',
-      '04-01-2024',
-      '05-01-2024',
-      '06-01-2024',
-      '07-01-2024',
-      '08-01-2024',
-      '09-01-2024',
-      '10-01-2024',
-      '11-01-2024',
-      '12-01-2024',
-      '01-01-2025',
+      '12-01-2022', '01-01-2023', '02-01-2023', '03-01-2023', '04-01-2023', '05-01-2023',
+      '06-01-2023', '07-01-2023', '08-01-2023', '09-01-2023', '10-01-2023', '11-01-2023',
+      '12-01-2023', '01-01-2024', '02-01-2024', '03-01-2024', '04-01-2024', '05-01-2024',
+      '06-01-2024', '07-01-2024', '08-01-2024', '09-01-2024', '10-01-2024', '11-01-2024',
+      '12-01-2024', '01-01-2025',
     ],
     datasets: [
       // Indigo line
       {
-        data: [732, 610, 610, 504, 504, 504, 349, 349, 504, 342, 504, 610, 391, 192, 154, 273, 191, 191, 126, 263, 349, 252, 423, 622, 470, 532],
+        data: [472.03, 429.24, 345.37, 419.81, 452.79, 336.41, 450.66, 287.55, 424.04, 461.75, 400.85, 410.36, 493.78, 450.84, 452.33, 286.08, 493.94, 477.40, 461.05, 398.29, 354.02, 286.80, 528.30, 457.67, 399.04, 442.83],
         fill: true,
         backgroundColor: function(context) {
           const chart = context.chart;
@@ -62,20 +41,6 @@ function DashboardCard01() {
         clip: 20,
         tension: 0.2,
       },
-      // Gray line
-      {
-        data: [532, 532, 532, 404, 404, 314, 314, 314, 314, 314, 234, 314, 234, 234, 314, 314, 314, 388, 314, 202, 202, 202, 202, 314, 720, 642],
-        borderColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointHoverBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
-        clip: 20,
-        tension: 0.2,
-      },
     ],
   };
 
@@ -83,36 +48,26 @@ function DashboardCard01() {
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
       <div className="px-5 pt-5">
         <header className="flex justify-between items-start mb-2">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Acme Plus</h2>
-          {/* Menu button */}
-          <EditMenu align="right" className="relative inline-flex">
-            <li>
-              <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-                Option 1
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-                Option 2
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">
-                Remove
-              </Link>
-            </li>
-          </EditMenu>
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Total Offense</h2>
         </header>
-        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Sales</div>
+        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Average Yards Per Game</div>
         <div className="flex items-start">
-          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">$24,780</div>
-          <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+49%</div>
+          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">418.2</div>
+          <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+3%</div>
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
       <div className="grow max-sm:max-h-[128px] xl:max-h-[128px]">
         {/* Change the height attribute to adjust the chart height */}
-        <LineChart data={chartData} width={389} height={128} />
+        <LineChart data={chartData} width={389} height={128} options={{
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => context.parsed.y
+              }
+            }
+          }
+        }} />
       </div>
     </div>
   );

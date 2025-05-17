@@ -5,6 +5,7 @@ import {
   useLocation,
   Navigate
 } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import './css/style.css';
 import './charts/ChartjsConfig';
@@ -15,7 +16,8 @@ import Auth from './pages/Auth';
 
 function App() {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const auth = getAuth();
 
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto';
@@ -23,10 +25,18 @@ function App() {
     document.querySelector('html').style.scrollBehavior = '';
   }, []);
 
+  // Listen for Firebase auth state changes
   useEffect(() => {
-    const authStatus = localStorage.getItem('isAuthenticated');
-    setIsAuthenticated(authStatus === 'true');
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user); // True if user is logged in, false otherwise
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [auth]);
+
+  if (isAuthenticated === null) {
+    return <p>Loading...</p>; // Show a loading state while checking auth status
+  }
 
   return (
     <>

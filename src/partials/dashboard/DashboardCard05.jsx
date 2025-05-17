@@ -6,20 +6,14 @@ import RealtimeChart from '../../charts/RealtimeChart';
 // Import utilities
 import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
 
-function DashboardCard05() {
+function DashboardCard05({ initialData, initialRange }) {
 
-  // IMPORTANT:
-  // Code below is for demo purpose only, and it's not covered by support.
-  // If you need to replace dummy data with real data,
-  // refer to Chart.js documentation: https://www.chartjs.org/docs/latest
-
-  // Fake real-time data
   const [counter, setCounter] = useState(0);
   const [increment, setIncrement] = useState(0);
-  const [range, setRange] = useState(35);
-  
-  // Dummy data to be looped
-  const data = [
+  const [range, setRange] = useState(initialRange);
+
+  // Use the passed in data or fallback to default data
+  const data = initialData || [
     57.81, 57.75, 55.48, 54.28, 53.14, 52.25, 51.04, 52.49, 55.49, 56.87,
     53.73, 56.42, 58.06, 55.62, 58.16, 55.22, 58.67, 60.18, 61.31, 63.25,
     65.91, 64.44, 65.97, 62.27, 60.96, 59.34, 55.07, 59.85, 53.79, 51.92,
@@ -30,7 +24,6 @@ function DashboardCard05() {
 
   const [slicedData, setSlicedData] = useState(data.slice(0, range));
 
-  // Generate fake dates from now to back in time
   const generateDates = () => {
     const now = new Date();
     const dates = [];
@@ -42,15 +35,13 @@ function DashboardCard05() {
 
   const [slicedLabels, setSlicedLabels] = useState(generateDates().slice(0, range).reverse());
 
-  // Fake update every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCounter(counter + 1);
     }, 2000);
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
   }, [counter]);
 
-  // Loop through data array and update
   useEffect(() => {
     setIncrement(increment + 1);
     if (increment + range < data.length) {
@@ -60,25 +51,23 @@ function DashboardCard05() {
       setRange(0);
     }
     setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
-    return () => setIncrement(0)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => setIncrement(0);
   }, [counter]);
 
   const chartData = {
     labels: slicedLabels,
     datasets: [
-      // Indigo line
       {
         data: slicedData,
         fill: true,
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
           const chart = context.chart;
-          const {ctx, chartArea} = chart;
+          const { ctx, chartArea } = chart;
           return chartAreaGradient(ctx, chartArea, [
             { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
             { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
           ]);
-        },       
+        },
         borderColor: getCssVariable('--color-violet-500'),
         borderWidth: 2,
         pointRadius: 0,
@@ -86,7 +75,7 @@ function DashboardCard05() {
         pointBackgroundColor: getCssVariable('--color-violet-500'),
         pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
         pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,          
+        pointHoverBorderWidth: 0,
         clip: 20,
         tension: 0.2,
       },
@@ -101,11 +90,19 @@ function DashboardCard05() {
           <div className="text-xs text-center whitespace-nowrap">Built with <a className="underline" href="https://www.chartjs.org/" target="_blank" rel="noreferrer">Chart.js</a></div>
         </Tooltip>
       </header>
-      {/* Chart built with Chart.js 3 */}
-      {/* Change the height attribute to adjust the chart height */}
       <RealtimeChart data={chartData} width={595} height={248} />
     </div>
   );
 }
+
+DashboardCard05.defaultProps = {
+  initialData: [
+    45.12, 47.56, 49.78, 50.23, 52.89, 54.23, 53.15, 52.49, 56.32, 58.99,
+    57.02, 58.12, 60.34, 61.78, 63.91, 62.24, 64.15, 65.23, 66.87, 68.22,
+    67.56, 65.43, 63.21, 60.12, 59.23, 56.23, 55.01, 52.18, 51.22, 50.23,
+    48.98, 47.75, 46.88, 45.12, 47.66, 50.43, 51.98, 53.15, 54.45, 56.12,
+  ],
+  initialRange: 30
+};
 
 export default DashboardCard05;
